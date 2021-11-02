@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(express.static("public"))
 
-mongoose.connect("mongodb://localhost:27017/wikiDB")
+mongoose.connect("mongodb://localhost:27017/wikiDB", { useNewUrlParser: true })
 
 const articleschema = {
   title: String,
@@ -56,20 +56,39 @@ app
 
 ////////////////Request Targetting specific articles////////////////////
 
-app.route("/articles/:articleTitle").get(function (req, res) {
-  Article.findOne(
-    {
-      title: req.params.articleTitle,
-    },
-    function (err, foundArticle) {
-      if (foundArticle) {
-        res.send(foundArticle)
-      } else {
-        res.send("No matching article found")
+app
+  .route("/articles/:articleTitle")
+  .get(function (req, res) {
+    Article.findOne(
+      {
+        title: req.params.articleTitle,
+      },
+      function (err, foundArticle) {
+        if (foundArticle) {
+          res.send(foundArticle)
+        } else {
+          res.send("No matching article found")
+        }
       }
-    }
-  )
-})
+    )
+  })
+  .put(function (req, res) {
+    Article.replaceOne(
+      { title: req.params.articleTitle },
+      {
+        title: req.body.title,
+        content: req.body.content,
+      },
+      { overwrite: true },
+      function (err) {
+        if (!err) {
+          res.send("Updated Successfully")
+        } else {
+          res.send("cant update")
+        }
+      }
+    )
+  })
 ////////////////Request Targetting specific articles////////////////////
 
 ///////listening/////////
