@@ -89,6 +89,22 @@ app
       }
     )
   })
+
+  .patch(function (req, res) {
+    Article.replaceOne(
+      { title: req.params.articleTitle },
+      {
+        $set: req.body,
+      },
+      function (err) {
+        if (!err) {
+          res.send("Updated Successfully")
+        } else {
+          res.send("cant update")
+        }
+      }
+    )
+  })
 ////////////////Request Targetting specific articles////////////////////
 
 ///////listening/////////
