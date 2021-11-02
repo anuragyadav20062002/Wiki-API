@@ -29,6 +29,8 @@ app.get("/articles", function (req, res) {
   })
 })
 
+/////////post request////////
+
 app.post("/articles", function (req, res) {
   const newArticle = new Article({
     title: req.body.title,
@@ -38,6 +40,16 @@ app.post("/articles", function (req, res) {
   newArticle.save(function (err) {
     if (!err) {
       res.send("Successfully added new document in database")
+    }
+  })
+})
+
+///////////deleting///////////////
+
+app.delete("/articles", function (req, res) {
+  Article.deleteMany(function (err) {
+    if (!err) {
+      res.send("Successfully deleted document")
     }
   })
 })
