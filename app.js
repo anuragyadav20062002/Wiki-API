@@ -105,6 +105,16 @@ app
       }
     )
   })
+
+  .delete(function (req, res) {
+    Article.deleteOne({ title: req.params.articleTitle }, function (err) {
+      if (!err) {
+        res.send("Deleted Successfully")
+      } else {
+        res.send("cant delete")
+      }
+    })
+  })
 ////////////////Request Targetting specific articles////////////////////
 
 ///////listening/////////
