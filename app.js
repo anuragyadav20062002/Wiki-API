@@ -19,6 +19,8 @@ const articleschema = {
 
 const Article = mongoose.model("Article", articleschema)
 
+////////////////Request Targetting all articles////////////////////
+
 app
   .route("/articles")
   .get(function (req, res) {
@@ -49,6 +51,26 @@ app
       }
     })
   })
+
+////////////////Request Targetting all articles////////////////////
+
+////////////////Request Targetting specific articles////////////////////
+
+app.route("/articles/:articleTitle").get(function (req, res) {
+  Article.findOne(
+    {
+      title: req.params.articleTitle,
+    },
+    function (err, foundArticle) {
+      if (foundArticle) {
+        res.send(foundArticle)
+      } else {
+        res.send("No matching article found")
+      }
+    }
+  )
+})
+////////////////Request Targetting specific articles////////////////////
 
 ///////listening/////////
 app.listen(3000, function () {
